@@ -4,12 +4,12 @@ from random import randrange, choice
 def list_mixer(array):
     length = len(array)
     mixed_list = []
-    val_list = list(range(length))
+    pos_list = list(range(length))
     n = length
     while (n > 0):
         index = randrange(0, n)
-        mixed_list.append(array[val_list[index]])
-        val_list.pop(index)
+        mixed_list.append(array[pos_list[index]])
+        pos_list.pop(index)
         n -= 1
     return mixed_list
 
