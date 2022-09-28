@@ -4,28 +4,27 @@ from random import randrange, choice
 def list_mixer(array):
     length = len(array)
     mixed_list = []
-    while (True):
-        place = randrange(0, length)
-        if (place not in mixed_list):
-            mixed_list.append(place)
-        if len(mixed_list) == length:
-            break
-    for i in range(length):
-        mixed_list[i] = array[mixed_list[i]]
+    val_list = list(range(length))
+    n = length
+    while (n > 0):
+        index = randrange(0, n)
+        mixed_list.append(array[val_list[index]])
+        val_list.pop(index)
+        n -= 1
     return mixed_list
 
 
-def list_mixer2(array): # более оптимальный вариант с random.choice()
+def list_mixer2(array):  # вариант с random.choice()
     length = len(array)
     mixed_list = []
     val_list = list(range(length))
     while (True):
         place = choice(val_list)
         val_list.remove(place)
-        mixed_list.append(place)
+        mixed_list.append(array[place])
         if len(mixed_list) == length:
             break
     return mixed_list
 
 
-print(list_mixer([2, 2, 5, 5, 5, 10, 10, 7, 7, 7]))
+print(list_mixer(range(-10,10,1)))
