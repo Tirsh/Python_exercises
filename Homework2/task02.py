@@ -15,5 +15,5 @@ def factorial(number):
 
 
 num = input_int("Введите число: ")
-num_list = [factorial(i+1) for i in range(num)]
+num_list = [factorial(i) for i in range(1, num+1)]
 print(num_list)
