@@ -1,5 +1,6 @@
 from curses.ascii import isdigit
 
+
 def input_float(text):
     # Функция ввода вещественного числа
     while (True):
@@ -7,7 +8,8 @@ def input_float(text):
             number = float(input(text))
             return number
         except ValueError:
-            print("Необходимо ввести число!")
+            print('Необходимо ввести число! (разделитель ".")')
+
 
 number = input_float("Введите вещественное число: ")
 number_as_string = str(number)

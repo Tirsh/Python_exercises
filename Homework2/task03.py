@@ -7,5 +7,6 @@ def input_int(text):
         except ValueError:
             print("Необходимо ввести число!")
 
+
 num = input_int("Введите n: ")
-print([(1 + 1/i)**i for i in range(num)])
+print(round(sum([(1 + 1/i)**i for i in range(1, num+1)]), 3))
