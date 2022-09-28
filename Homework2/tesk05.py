@@ -17,10 +17,10 @@ def list_mixer(array):
 def list_mixer2(array):  # вариант с random.choice()
     length = len(array)
     mixed_list = []
-    val_list = list(range(length))
+    pos_list = list(range(length))
     while (True):
-        place = choice(val_list)
-        val_list.remove(place)
+        place = choice(pos_list)
+        pos_list.remove(place)
         mixed_list.append(array[place])
         if len(mixed_list) == length:
             break
