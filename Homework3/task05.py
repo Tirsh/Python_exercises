@@ -1,6 +1,3 @@
-from curses.ascii import isdigit
-
-
 def input_int(text):
     # Функция ввода целого числа
     while True:

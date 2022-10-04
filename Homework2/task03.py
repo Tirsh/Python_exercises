@@ -1,6 +1,6 @@
 def input_int(text):
     # Функция ввода целого числа
-    while (True):
+    while True:
         try:
             number = int(input(text))
             return number

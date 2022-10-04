@@ -3,10 +3,10 @@ from curses.ascii import isdigit
 
 def input_float(text):
     # Функция ввода вещественного числа
-    while (True):
+    while True:
         try:
-            number = float(input(text))
-            return number
+            num = float(input(text))
+            return num
         except ValueError:
             print('Необходимо ввести число! (разделитель ".")')
 

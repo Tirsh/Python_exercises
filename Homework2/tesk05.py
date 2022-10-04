@@ -6,7 +6,7 @@ def list_mixer(array):
     mixed_list = []
     pos_list = list(range(length))
     n = length
-    while (n > 0):
+    while n > 0:
         index = randrange(0, n)
         mixed_list.append(array[pos_list[index]])
         pos_list.pop(index)
@@ -18,7 +18,7 @@ def list_mixer2(array):  # вариант с random.choice()
     length = len(array)
     mixed_list = []
     pos_list = list(range(length))
-    while (True):
+    while True:
         place = choice(pos_list)
         pos_list.remove(place)
         mixed_list.append(array[place])
@@ -27,4 +27,4 @@ def list_mixer2(array):  # вариант с random.choice()
     return mixed_list
 
 
-print(list_mixer(range(-10,10,1)))
+print(list_mixer(range(-10, 10, 1)))

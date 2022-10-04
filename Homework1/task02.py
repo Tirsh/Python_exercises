@@ -1,6 +1,6 @@
 # Напишите программу для. проверки истинности утверждения ¬(X ⋁ Y ⋁ Z) = ¬X ⋀ ¬Y ⋀ ¬Z для всех значений предикат.
 def is_predicate(x, y, z): return not (x or y or z) == (
-    not x and not y and not z)  # функция определеня истинности выражения
+    not x and not y and not z)  # функция определения истинности выражения
 
 
 xyz_bool_array = [[bool(int(i)) for i in str(bin(x))[2:].zfill(3)]

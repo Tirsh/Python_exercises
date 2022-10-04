@@ -1,6 +1,6 @@
 def input_int(text):
     # Функция ввода целого числа
-    while (True):
+    while True:
         try:
             number = int(input(text))
             return number
@@ -9,7 +9,7 @@ def input_int(text):
 
 
 def factorial(number):
-    if (number == 1):
+    if number == 1:
         return 1
     return factorial(number-1) * number
 
