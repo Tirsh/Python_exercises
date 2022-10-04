@@ -1,0 +1,5 @@
+numbers = input("Введите строку: ")
+num_list = list(map(int, numbers.split()))
+print(num_list)
+print(f"min = {min(num_list)}")
+print(f"max = {max(num_list)}")
