@@ -14,7 +14,7 @@ def input_float(text):
 
 def count_pi(accuracy):
     x1, x2 = 0, 0
-    for i in range(1, 100000000000, 4):
+    for i in range(1, 50000000000, 4):
         x1 = x2 + 4 / i
         x2 = x1 - 4 / (i+2)
         if x1-x2 <= accuracy:
