@@ -18,7 +18,7 @@ def input_int(text, answers):
 
 
 def draw_field(field):
-    desk = {None: " ", True: "X", False: "0"}
+    desk = {1: " ", 2: "X", 3: "0"}
     print("""
                1   2   3
             1  {} | {} | {}
@@ -35,7 +35,7 @@ def move_to_field(move):
 
 
 def available_moves(field):
-    return {FIELD_MAP[item] for item in range(len(field)) if field[item] is None}
+    return {FIELD_MAP[item] for item in range(len(field)) if field[item] == 1}
 
 
 def make_move(field):
@@ -45,20 +45,21 @@ def make_move(field):
 
 def bot_move(field):
     test_field = field.copy()
-    max_priority = {11, 31, 22, 13, 33}
+    best_move = 22
+    max_priority = {11, 31, 13, 33}
     moves_set = available_moves(field)
     for item in moves_set:
-        test_field[move_to_field(item)] = False
+        test_field[move_to_field(item)] = 3
         if check_winner(test_field):
             return item
-        test_field[move_to_field(item)] = None
+        test_field[move_to_field(item)] = 1
     for item in moves_set:
-        test_field[move_to_field(item)] = True
+        test_field[move_to_field(item)] = 2
         if check_winner(test_field):
             return item
-        test_field[move_to_field(item)] = None
-    if 22 in moves_set:
-        return 22
+        test_field[move_to_field(item)] = 1
+    if best_move in moves_set:
+        return best_move
     if not max_priority.isdisjoint(moves_set):
         return random.choice(tuple(max_priority & moves_set))
     return random.choice(tuple(moves_set))
@@ -71,7 +72,7 @@ def lottery():
 
 
 def formed_a_line(line):
-    if line.count(False) == 3 or line.count(True) == 3:
+    if line.count(3) == 3 or line.count(2) == 3:
         return True
     return False
 
@@ -90,7 +91,7 @@ def check_winner(field):
 def start_game():
     game_over = False
     winner = 0
-    field = [None for _ in range(9)]
+    field = [1 for _ in range(9)]
     print("Игрок: Х")
     print("Бот:   0")
     input("Для начала игры нажмите [ENTER]")
@@ -101,7 +102,7 @@ def start_game():
         if first_turn:
             print("\nХод Игрока: ")
             move = make_move(field)
-            field[move_to_field(move)] = True
+            field[move_to_field(move)] = 2
             draw_field(field)
             game_over = check_winner(field)
             winner = 1 if game_over else 0
@@ -109,12 +110,12 @@ def start_game():
         else:
             print("\nХод Бота: ")
             move = bot_move(field)
-            field[move_to_field(move)] = False
+            field[move_to_field(move)] = 3
             draw_field(field)
             game_over = check_winner(field)
             winner = 2 if game_over else 0
             first_turn = True
-        if None not in field:
+        if 1 not in field:
             game_over = True
     winners = {0: "Ничья!", 1: "Побеждает игрок!", 2: "Побеждает Бот!"}
     print("Конец игры!\n{}".format(winners[winner]))
