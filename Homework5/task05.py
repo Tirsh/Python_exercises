@@ -23,5 +23,5 @@ def find_ascending_sequences(lst):
     return list_add(find_ascending_sequences(lst[1::]), result)
 
 
-ascending_sequences = find_ascending_sequences([1, 5, 1, 2, 3, 4, 6, 1, 7])
+ascending_sequences = find_ascending_sequences([1, 5, 2, 3, 4, 6, 1, 7])
 print(ascending_sequences)
