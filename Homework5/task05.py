@@ -20,7 +20,8 @@ def find_ascending_sequences(lst):
                 new_list.append(lst[i])
                 num = lst[i]
         result.extend([new_list[:i] for i in range(2, len(new_list) + 1) if new_list[:i] not in result])
-    return list_add(find_ascending_sequences(lst[1::]), result)
+
+    return list_add(result, find_ascending_sequences(lst[1::]))
 
 
 ascending_sequences = find_ascending_sequences([1, 5, 2, 3, 4, 6, 1, 7])

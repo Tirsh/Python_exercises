@@ -15,7 +15,7 @@ def rle_compress(text):
     counter = 1
     while len(text_list) != 0:
         next_symbol = text_list.pop()
-        if next_symbol == symbol:
+        if next_symbol == symbol and counter < 9:
             counter += 1
         else:
             result.append("{}{}".format(symbol, counter))
