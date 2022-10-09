@@ -34,5 +34,4 @@ def find_ascending_sequences(lst):
     return unique_sequences(ascending_sequences)
 
 
-print(len(find_ascending_sequences([1, 5, 2, 3, 4, 6, 1, 7])))
-
+print(find_ascending_sequences([1, 5, 2, 3, 4, 6, 1, 7]))
