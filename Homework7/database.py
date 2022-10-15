@@ -16,20 +16,20 @@ def connect_to_base(file_name):
     return cursor
 
 
-def show_all():
+def get_all():
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM phone_book;")
     all_results = cursor.fetchall()
-    print(all_results)
     return all_results
 
 
-def add_number(tel_dict):
+def add_row(new_row):
     cursor = connection.cursor()
     cursor.execute(f"""INSERT INTO phone_book(fname, lname, phone, description) 
-       VALUES('{tel_dict["fname"]}', '{tel_dict["lname"]}', '{tel_dict["phone"]}', '{tel_dict["description"]}');""")
+       VALUES('{new_row[0]}', '{new_row[1]}', '{new_row[2]}', '{new_row[3]}');""")
     connection.commit()
-    return tel_dict
+    print("Новая запись добавлена")
+    return new_row
 
 
 def del_by_name(first_name):
@@ -42,27 +42,17 @@ def del_by_name(first_name):
 def find_by_name(first_name):
     cursor = connection.cursor()
     cursor.execute(f"select * from phone_book where fname='{first_name}'")
-    print(cursor.fetchall())
-    return first_name
+    return cursor.fetchall()
 
 
 def find_by_phone(phone):
     cursor = connection.cursor()
-    cursor.execute(f"select * from phone_book where fname='{phone}'")
-    print(cursor.fetchall())
-    return phone
+    cursor.execute(f"select * from phone_book where phone='{phone}'")
+    return cursor.fetchall()
 
 
 def add_many(numbers):
     cursor = connection.cursor()
-    cursor.executemany("INSERT INTO phone_book VALUES(?, ?, ?, ?, ?);", numbers)
+    cursor.executemany("INSERT INTO phone_book(fname, lname, phone, description) VALUES(?, ?, ?, ?);", numbers)
     connection.commit()
     return numbers
-
-
-connect_to_base("tel.db")
-add_number({"fname": "Vasipov", "lname": "Vasleriy", "phone": "+79112110012", "description": "Nothing special"})
-show_all()
-# del_by_name("Vasipov")
-show_all()
-find_by_name("Berg")

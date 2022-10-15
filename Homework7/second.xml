@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<data>
+    <id name="1">
+        <fname>Vasipov</fname>
+        <lname>Valeriy</lname>
+        <phone>89112341313</phone>
+        <description>Home</description>
+    </id>
+    <id name="2">
+        <fname>Ivanov</fname>
+        <lname>Ivan</lname>
+        <phone>89312132323</phone>
+        <description>Work</description>
+    </id>
+    <id name="3">
+        <fname>Sergeev</fname>
+        <lname>Sergei</lname>
+        <phone>89412343232</phone>
+        <description>Home</description>
+    </id>
+    <id name="4">
+        <fname>Petrov</fname>
+        <lname>Petr</lname>
+        <phone>89431231313</phone>
+        <description>Mobile</description>
+    </id>
+    <id name="5">
+        <fname>Semenov</fname>
+        <lname>Semen</lname>
+        <phone>89814432121</phone>
+        <description>Home</description>
+    </id></data>
