@@ -1,18 +1,18 @@
 import database
 import import_export
-import Menu
+import menu
 
 DATA_BASE = "tel.db"
 
 
 def show_all_numbers():
-    Menu.show_records(database.get_all())
+    menu.show_records(database.get_all())
     input("Нажмите любую клавишу для возврата в меню.")
     return True
 
 
 def add_number():
-    new_number = Menu.new_number()
+    new_number = menu.new_number()
     if not is_exist(new_number):
         database.add_row(new_number)
     else:
@@ -26,9 +26,9 @@ def is_exist(record):
 
 
 def find_number():
-    result = database.find_by_name(Menu.get_first_name())
+    result = database.find_by_name(menu.get_first_name())
     if result:
-        Menu.show_records(result)
+        menu.show_records(result)
     else:
         print("Запись не найдена")
     input("Нажмите любую клавишу для возврата в меню.")
@@ -36,19 +36,19 @@ def find_number():
 
 
 def delete_number():
-    database.del_by_name(Menu.get_first_name())
+    database.del_by_name(menu.get_first_name())
     input("Нажмите любую клавишу для возврата в меню.")
     return True
 
 
 def make_export():
     file = ""
-    option = Menu.show_export_menu()
+    option = menu.show_export_menu()
     if option == 1:
-        file = Menu.get_file_name()
+        file = menu.get_file_name()
         import_export.export_to_csv(file)
     elif option == 2:
-        file = Menu.get_file_name()
+        file = menu.get_file_name()
         import_export.export_to_xml(file)
     elif option == 3:
         input("Нажмите любую клавишу для возврата в меню.")
@@ -60,13 +60,13 @@ def make_export():
 
 def make_import():
     file = ""
-    option = Menu.show_import_menu()
+    option = menu.show_import_menu()
     success = False
     if option == 1:
-        file = Menu.get_file_name()
+        file = menu.get_file_name()
         success = import_export.import_from_csv(file)
     elif option == 2:
-        file = Menu.get_file_name()
+        file = menu.get_file_name()
         success = import_export.import_from_xml(file)
     elif option == 3:
         input("Нажмите любую клавишу для возврата в меню.")
@@ -89,6 +89,6 @@ def start_phone_book():
     database.connect_to_base(DATA_BASE)
     continue_to_work = True
     while continue_to_work:
-        option = Menu.show_menu()
+        option = menu.show_menu()
         continue_to_work = options[option]()
     return 0
