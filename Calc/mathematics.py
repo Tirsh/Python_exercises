@@ -1,3 +1,4 @@
+import loger
 def make_sum(a, b):
     if not isinstance(a, tuple):
         return a + b
@@ -30,4 +31,6 @@ operations = {'+': make_sum, '-': make_sub, '*': make_mult, '/': make_div}
 
 
 def make_calc(data):
-    return operations[data[0]](data[1], data[2])
+    result = operations[data[0]](data[1], data[2])
+    loger.write_log(f"Произведена калькуляция: ({data[1]} {data[0]} {data[2]}), результат({result})")
+    return result
