@@ -59,6 +59,12 @@ def get_all_records(table):
     return all_results
 
 
+def get_record_by_value(user_id):
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT * FROM marks_table INNER JOIN homeworks ON homeworks.id = marks_table.homework_id WHERE author_id = {user_id};")
+    return cursor.fetchall()
+
+
 def add_many_records(table, records):
     cursor = connection.cursor()
     cursor.executemany(f"INSERT INTO {table}(name, description) VALUES(?, ?);", records)
@@ -78,7 +84,7 @@ def find_by_value(table, key, value):
 #
 # print(get_all_records('subjects'))
 # add_record('hometasks', {'subject_id': 3, 'info': 'Написать программу учета банковских транзакций'})
-# add_record('hometasks', {'subject_id': 1, 'info': 'Решить задания 173-175'})
+# add_record('hometasks')
 # add_record('homeworks', {'hometask_id': 2, 'author_id': 1, 'homework': 'Решение задания'})
 # add_record('marks_table', {'homework_id': 1, 'teacher_name_id': 1, 'mark': 5, 'comment': "Отличная работа"})
 #

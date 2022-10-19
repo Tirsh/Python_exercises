@@ -1,6 +1,18 @@
-import teacher, student
+import teacher, student, data_base
 def menu_number_checker(answer, answers):
     return True if answer in answers else False
+
+def input_circle(text, answers):
+    while True:
+        num = input(text)
+        if not num.isdigit():
+            print("Некорректный ввод!")
+            continue
+        if menu_number_checker(int(num), answers):
+            return int(num)
+        else:
+            print("Некорректный ввод!")
+
 
 
 def check_role():
@@ -54,8 +66,10 @@ def login(role):
     return id
 
 
+
 def main_menu():
     user_id = 0
+    role = 0
     while user_id == 0:
         print("Вас приветствует информационный портал обучающего центра \"Лютик\"")
         print("Выберете пункт меню:")
@@ -114,3 +128,98 @@ def show_records(data):
     for item in data:
         show_record(item)
     return data
+
+
+def new_subject():
+    subject = input("Введите название предмета: ")
+    description = input("Введите описание предмета: ")
+    return {'name': subject, 'description': description}
+
+
+def subject_list():
+    data = data_base.get_all_records("subjects")
+    subjects = list(map(lambda x: x[1], data))
+    return subjects
+
+
+def hometask_list():
+    subjects = subject_list()
+    data = data_base.get_all_records("hometasks")
+    return list(map(lambda record: [record[0], subjects[record[1]-1], record[2]], data))
+
+
+def homework_list():
+    homeworks = hometask_list()
+    students = data_base.get_all_records("students")
+    data = data_base.get_all_records("homeworks")
+    return list(map(lambda record: [homeworks[record[1]-1], students[record[2]-1][1], record[3]], data))
+
+
+
+def new_hometask():
+    subjects = subject_list()
+    while True:
+        for elem, item in enumerate(subjects):
+            print(f"{elem+1}. {item}")
+        print("0. Выход")
+        num = input("Ваш ввод: ")
+        if not num.isdigit():
+            print("Некорректный ввод!")
+            continue
+        if num == "0":
+            return {}
+        if menu_number_checker(int(num), set(range(1, len(subjects)+1))):
+            num = int(num)
+            break
+        else:
+            print("Некорректный ввод!")
+    task = input("Введите задание: ")
+    return {'subject_id': num, 'info': task}
+
+
+def new_comleted_work(user_id):
+    hometask = hometask_list()
+    while True:
+        for elem, item in enumerate(hometask):
+            print(f"{elem+1}. {item[1]}: {item[2]}")
+        print("0. Выход")
+        num = input("Ваш ввод: ")
+        if not num.isdigit():
+            print("Некорректный ввод!")
+            continue
+        if num == "0":
+            return {}
+        if menu_number_checker(int(num), set(range(1, len(hometask)+1))):
+            num = int(num)
+            break
+        else:
+            print("Некорректный ввод!")
+    work = input("Введите решение: ")
+    return {'hometask_id': num, 'author_id': user_id, 'homework': work}
+
+
+def new_mark(user_id):
+    work_list = homework_list()
+    while True:
+        for elem, item in enumerate(work_list):
+            print(f"{elem+1}. Предмет: {item[0][1]}| Задание: {item[0][2]}")
+            print(f"Автор:{item[1]}:\n{item[2]}")
+        print("0. Выход")
+        num = input("Введите номер работы для оценки: ")
+        if not num.isdigit():
+            print("Некорректный ввод!")
+            continue
+        if num == "0":
+            return {}
+        if menu_number_checker(int(num), set(range(1, len(work_list)+1))):
+            num = int(num)
+            break
+        else:
+            print("Некорректный ввод!")
+    mark = input_circle("Оцените работу (2-5): ", set(range(2, 6)))
+    comment = input("Введите комментарий к оценке: ")
+    return {'homework_id': num, 'teacher_name_id': user_id, 'mark': mark, 'comment': comment}
+
+
+
+
