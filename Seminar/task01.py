@@ -1,4 +1,4 @@
-operation = "2+2*2/4"
+operation = "(2+2)*2/4"
 operation = operation.replace(" ", "")
 
 

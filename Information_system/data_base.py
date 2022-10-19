@@ -9,6 +9,14 @@ def connect_to_base(file_name):
        id INTEGER PRIMARY KEY AUTOINCREMENT,
        name TEXT,
        description TEXT);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS teachers(
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       teacher_name TEXT,
+       specialization TEXT);""")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS students(
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       student_name TEXT,
+       study TEXT);""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS hometasks(
        id INTEGER PRIMARY KEY AUTOINCREMENT,
        subject_id INTEGER,
@@ -17,98 +25,63 @@ def connect_to_base(file_name):
     cursor.execute("""CREATE TABLE IF NOT EXISTS homeworks(
        id INTEGER PRIMARY KEY AUTOINCREMENT,
        hometask_id INTEGER,
-       author TEXT,
+       author_id INTEGER,
        homework TEXT,
+       FOREIGN KEY (author_id) REFERENCES students(id),
        FOREIGN KEY (hometask_id) REFERENCES hometasks(id));""")
     cursor.execute("""CREATE TABLE IF NOT EXISTS marks_table(
        id INTEGER PRIMARY KEY AUTOINCREMENT,
        homework_id INTEGER,
-       teacher_name TEXT,
+       teacher_name_id INTEGER,
        mark INTEGER,
        comment TEXT,
+       FOREIGN KEY (teacher_name_id) REFERENCES teachers(id),
        FOREIGN KEY (homework_id) REFERENCES hometasks(id));""")
     connection.commit()
     return 0
 
 
-def add_subject(new_row):
+def add_record(table, record):
     cursor = connection.cursor()
-    cursor.execute(f"""INSERT INTO subjects(name, description) 
-       VALUES('{new_row[0]}', '{new_row[1]}');""")
+    keys = record.keys()
+    values = [str(record[item]) for item in keys]
+    cursor.execute(f"""INSERT INTO {table}({', '.join(keys)}) 
+       VALUES({', '.join(map(lambda x: x if x.isdigit() else f"'{x}'", values))});""")
     connection.commit()
     print("Новая запись добавлена")
-    return new_row
+    return record
 
 
-def add_many_subjects(subjects):
+def get_all_records(table):
     cursor = connection.cursor()
-    cursor.executemany("INSERT INTO subjects(name, description) VALUES(?, ?);", subjects)
-    connection.commit()
-    return subjects
-
-def add_hometask(new_task):
-    cursor = connection.cursor()
-    cursor.execute(f"""INSERT INTO hometasks(subject_id, info) 
-       VALUES({new_task[0]}, '{new_task[1]}');""")
-    connection.commit()
-    print("Новая запись добавлена")
-    return new_task
-
-
-def add_homework(new_homework):
-    cursor = connection.cursor()
-    cursor.execute(f"""INSERT INTO homeworks(hometask_id, author, homework) 
-       VALUES({new_homework[0]}, '{new_homework[1]}', '{new_homework[2]}');""")
-    connection.commit()
-    print("Новая запись добавлена")
-    return new_homework
-
-
-def add_mark(new_mark):
-    cursor = connection.cursor()
-    cursor.execute(f"""INSERT INTO marks_table(homework_id, teacher_name, mark, comment) 
-       VALUES({new_mark[0]}, '{new_mark[1]}', {new_mark[2]}, '{new_mark[3]}');""")
-    connection.commit()
-    print("Новая запись добавлена")
-    return new_mark
-
-
-def get_all_subjects():
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM subjects;")
+    cursor.execute(f"SELECT * FROM {table};")
     all_results = cursor.fetchall()
     return all_results
 
 
-def get_all_hometasks():
+def add_many_records(table, records):
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM hometasks;")
-    all_results = cursor.fetchall()
-    return all_results
+    cursor.executemany(f"INSERT INTO {table}(name, description) VALUES(?, ?);", records)
+    connection.commit()
+    return records
 
 
-def get_all_homeworks():
+def find_by_value(table, key, value):
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM homeworks;")
-    all_results = cursor.fetchall()
-    return all_results
-def get_all_marks():
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM marks_table;")
-    all_results = cursor.fetchall()
-    return all_results
+    cursor.execute(f"select * from {table} where {key}='{value}'")
+    return cursor.fetchall()
+
+# add_record('students', {'student_name': 'Ivanov', "study": 'Разработка ПО'})
+# add_record('teachers', {'teacher_name': 'Stepanov', "specialization": 'Программирование JAVA'})
+# add_record('subjects', {'name': 'Математика', 'description': 'Начальный курс тригонометрии'})
+# add_record('subjects', {'name': 'Химия', 'description': 'Органическая химия'})
+#
+# print(get_all_records('subjects'))
+# add_record('hometasks', {'subject_id': 3, 'info': 'Написать программу учета банковских транзакций'})
+# add_record('hometasks', {'subject_id': 1, 'info': 'Решить задания 173-175'})
+# add_record('homeworks', {'hometask_id': 2, 'author_id': 1, 'homework': 'Решение задания'})
+# add_record('marks_table', {'homework_id': 1, 'teacher_name_id': 1, 'mark': 5, 'comment': "Отличная работа"})
+#
+# print(get_all_records('teachers'))
 
 
-connect_to_base('new_base.db')
-# add_subject(['Математика', 'Начальный курс тригонометрии'])
-# add_subject(['Химия', 'Органическая химия'])
-# add_subject(['Программирование', 'Java, Spring, Hibernate'])
-# print(get_all_subjects())
-
-# add_hometask([3, 'Написать программу учета банковских транзакций'])
-# add_hometask([1, 'Решить задания 173-175'])
-# print(get_all_hometasks())
-# add_homework([2, "Petrov", "Решение задания"])
-# print(get_all_homeworks())
-# add_mark([1, "Varenikov", 5, "Отличная работа"])
-print(get_all_marks())
