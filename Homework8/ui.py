@@ -1,4 +1,5 @@
 import teacher, student, data_base
+from loger import log
 def menu_number_checker(answer, answers):
     return True if answer in answers else False
 
@@ -49,11 +50,14 @@ def new_user(role, login):
         return 0
     if role == 1:
         print(f"Вы зарегистрированы как новый студент, доступ в систему по вашей фамилии: {login}!")
-        return student.add_new_student(login)
+        user_id = student.add_new_student(login)
+        log(user_id, 'add_new_student')
+        return user_id
     elif role == 2:
         print(f"Вы зарегистрированы как новый предподаватель, доступ в систему по вашей фамилии: {login}!")
-        return teacher.add_new_teacher(login)
-
+        user_id = teacher.add_new_teacher(login)
+        log(user_id, 'add_new_teacher')
+        return user_id
 
 def login(role):
     print("Введите вашу фамилию для входа в информационную систему: ")
@@ -63,6 +67,7 @@ def login(role):
         return id
     else:
         id = new_user(role, login)
+    log(id, 'user_login')
     return id
 
 
@@ -116,11 +121,17 @@ def student_menu():
 
 
 def show_record(record, text=''):
-    if not text:
-        print(f"ID: {record[0]}| Фамилия: {record[1]}, Имя: {record[2]}, Тел.: {record[3]}, Комментарий: {record[4]}")
+    length = len(record)
     if text:
-        print(text)
-        print(f"ID: {record[0]}| Фамилия: {record[1]}, Имя: {record[2]}, Тел.: {record[3]}, Комментарий: {record[4]}")
+        print(f"\t{record[0]}", end=' ')
+        for item in record[1:]:
+            print(f"{item} |", end=' ')
+        print()
+    if not text:
+        print(f"\t{record[0]}", end=' ')
+        for item in record[1:]:
+            print(f"{item} |", end=' ')
+        print()
     return record
 
 
@@ -128,6 +139,15 @@ def show_records(data):
     for item in data:
         show_record(item)
     return data
+
+
+def show_marked_tasks(data):
+    for item, row in enumerate(data):
+        show_record([item+1, *row[3][1:]])
+        print(f"Выполнил студент: {row[4]}")
+        print(f"Работа: {row[5]}")
+        print(f"Проверил преподаватель: {row[0]}, оценка {row[1]}, комментарий: {row[2]}")
+        print()
 
 
 def new_subject():
@@ -152,7 +172,7 @@ def homework_list():
     homeworks = hometask_list()
     students = data_base.get_all_records("students")
     data = data_base.get_all_records("homeworks")
-    return list(map(lambda record: [homeworks[record[1]-1], students[record[2]-1][1], record[3]], data))
+    return list(map(lambda record: [record[0], homeworks[record[1]-1], students[record[2]-1][1], record[3]], data))
 
 
 
@@ -178,7 +198,10 @@ def new_hometask():
 
 
 def new_comleted_work(user_id):
-    hometask = hometask_list()
+    made_hometasks = list(map(lambda x: x[1], data_base.find_by_value('homeworks', 'author_id', user_id)))
+    hometask = list(filter(lambda x: x[0] not in made_hometasks, hometask_list()))
+    if not hometask:
+        return {}
     while True:
         for elem, item in enumerate(hometask):
             print(f"{elem+1}. {item[1]}: {item[2]}")
@@ -190,7 +213,7 @@ def new_comleted_work(user_id):
         if num == "0":
             return {}
         if menu_number_checker(int(num), set(range(1, len(hometask)+1))):
-            num = int(num)
+            num = hometask[int(num)-1][0]
             break
         else:
             print("Некорректный ввод!")
@@ -199,11 +222,14 @@ def new_comleted_work(user_id):
 
 
 def new_mark(user_id):
-    work_list = homework_list()
+    marked_works = list(map(lambda x: x[1], data_base.get_all_records("marks_table")))
+    work_list = list(filter(lambda x: x[0] not in marked_works, homework_list()))
+    if not work_list:
+        return {}
     while True:
         for elem, item in enumerate(work_list):
-            print(f"{elem+1}. Предмет: {item[0][1]}| Задание: {item[0][2]}")
-            print(f"Автор:{item[1]}:\n{item[2]}")
+            print(f"{elem+1}. Предмет: {item[1][1]}| Задание: {item[1][2]}")
+            print(f"Автор:{item[2]}:\n{item[3]}")
         print("0. Выход")
         num = input("Введите номер работы для оценки: ")
         if not num.isdigit():
@@ -212,13 +238,15 @@ def new_mark(user_id):
         if num == "0":
             return {}
         if menu_number_checker(int(num), set(range(1, len(work_list)+1))):
-            num = int(num)
+            num = work_list[int(num)-1][0]
             break
         else:
             print("Некорректный ввод!")
     mark = input_circle("Оцените работу (2-5): ", set(range(2, 6)))
     comment = input("Введите комментарий к оценке: ")
     return {'homework_id': num, 'teacher_name_id': user_id, 'mark': mark, 'comment': comment}
+
+
 
 
 
