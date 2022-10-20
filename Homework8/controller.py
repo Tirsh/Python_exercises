@@ -34,6 +34,7 @@ def add_completed_work(user_id):
     data_base.add_record('homeworks', completed_work)
     return True
 
+
 def show_marked_works(user_id):
     subjects = data_base.get_all_records('subjects')
     marked_works = data_base.get_record_by_value(user_id)
@@ -49,6 +50,7 @@ def show_marked_works(user_id):
     log(user_id, "show_marked_works")
     input("Нажмите любую клавишу для возврата в меню.")
     return True
+
 
 def add_subject(user_id):
     log(user_id, "add_subject")
@@ -84,9 +86,9 @@ def exit_system(user_id):
     return False
 
 
-students_options = {1: show_all_subjects, 2: show_all_hometasks, 3: add_completed_work, 4: show_marked_works, 0: exit_system}
+students_options = {1: show_all_subjects, 2: show_all_hometasks,
+                    3: add_completed_work, 4: show_marked_works, 0: exit_system}
 teachers_options = {1: show_all_subjects, 2: add_subject, 3: add_hometask, 4: show_all_works, 0: exit_system}
-
 
 
 def start_informational_system():

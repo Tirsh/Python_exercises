@@ -85,5 +85,3 @@ def del_record_by_value(table, key, value):
     cursor.execute(f"DELETE FROM {table} WHERE {key}='{value}';")
     connection.commit()
     return value
-
-

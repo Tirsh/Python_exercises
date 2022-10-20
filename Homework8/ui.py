@@ -1,7 +1,12 @@
-import teacher, student, data_base
+import data_base
+import student
+import teacher
 from loger import log
+
+
 def menu_number_checker(answer, answers):
     return True if answer in answers else False
+
 
 def input_circle(text, answers):
     while True:
@@ -15,11 +20,10 @@ def input_circle(text, answers):
             print("Некорректный ввод!")
 
 
-
 def check_role():
     while True:
         print("""1. Я Студент
-2. Я предподаватель
+2. Я преподаватель
 0. Выход""")
         num = input("Ваш ввод: ")
         if not num.isdigit():
@@ -31,8 +35,8 @@ def check_role():
             print("Некорректный ввод!")
 
 
-def new_user(role, login):
-    print("""Позьзователь не найден
+def new_user(role, user_login):
+    print("""Пользователь не найден
 Для регистрации в системе подтвердите регистрацию""")
     while True:
         num = input("""1. Подтвердить регистрацию
@@ -49,30 +53,31 @@ def new_user(role, login):
     if num == 2:
         return 0
     if role == 1:
-        print(f"Вы зарегистрированы как новый студент, доступ в систему по вашей фамилии: {login}!")
-        user_id = student.add_new_student(login)
+        print(f"Вы зарегистрированы как новый студент, доступ в систему по вашей фамилии: {user_login}!")
+        user_id = student.add_new_student(user_login)
         log(user_id, 'add_new_student')
         return user_id
     elif role == 2:
-        print(f"Вы зарегистрированы как новый предподаватель, доступ в систему по вашей фамилии: {login}!")
-        user_id = teacher.add_new_teacher(login)
+        print(f"Вы зарегистрированы как новый преподаватель, доступ в систему по вашей фамилии: {user_login}!")
+        user_id = teacher.add_new_teacher(user_login)
         log(user_id, 'add_new_teacher')
         return user_id
 
+
 def login(role):
     print("Введите вашу фамилию для входа в информационную систему: ")
-    login = input("Ваш ввод: ")
-    id = student.is_exist(login) if role == 1 else teacher.is_exist(login)
-    if id != 0:
-        return id
+    user_login = input("Ваш ввод: ")
+    user_id = student.is_exist(user_login) if role == 1 else teacher.is_exist(user_login)
+    if user_id != 0:
+        return user_id
     else:
-        id = new_user(role, login)
-    log(id, 'user_login')
-    return id
-
+        user_id = new_user(role, user_login)
+    log(user_id, 'user_login')
+    return user_id
 
 
 def main_menu():
+
     user_id = 0
     role = 0
     while user_id == 0:
@@ -121,7 +126,6 @@ def student_menu():
 
 
 def show_record(record, text=''):
-    length = len(record)
     if text:
         print(f"\t{record[0]}", end=' ')
         for item in record[1:]:
@@ -173,7 +177,6 @@ def homework_list():
     students = data_base.get_all_records("students")
     data = data_base.get_all_records("homeworks")
     return list(map(lambda record: [record[0], homeworks[record[1]-1], students[record[2]-1][1], record[3]], data))
-
 
 
 def new_hometask():
@@ -245,9 +248,3 @@ def new_mark(user_id):
     mark = input_circle("Оцените работу (2-5): ", set(range(2, 6)))
     comment = input("Введите комментарий к оценке: ")
     return {'homework_id': num, 'teacher_name_id': user_id, 'mark': mark, 'comment': comment}
-
-
-
-
-
-

@@ -16,3 +16,5 @@
 1 add_completed_work
 1 show_all_hometasks
 1 exit_system
+1 show_all_subjects
+1 exit_system
