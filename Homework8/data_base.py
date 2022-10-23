@@ -61,7 +61,9 @@ def get_all_records(table):
 
 def get_record_by_value(user_id):
     cursor = connection.cursor()
-    cursor.execute(f"SELECT * FROM marks_table INNER JOIN homeworks ON homeworks.id = marks_table.homework_id WHERE author_id = {user_id};")
+    cursor.execute(f"SELECT * FROM marks_table "
+                   f"INNER JOIN homeworks ON homeworks.id = marks_table.homework_id "
+                   f"WHERE author_id = {user_id};")
     return cursor.fetchall()
 
 
@@ -77,17 +79,9 @@ def find_by_value(table, key, value):
     cursor.execute(f"select * from {table} where {key}='{value}'")
     return cursor.fetchall()
 
-# add_record('students', {'student_name': 'Ivanov', "study": 'Разработка ПО'})
-# add_record('teachers', {'teacher_name': 'Stepanov', "specialization": 'Программирование JAVA'})
-# add_record('subjects', {'name': 'Математика', 'description': 'Начальный курс тригонометрии'})
-# add_record('subjects', {'name': 'Химия', 'description': 'Органическая химия'})
-#
-# print(get_all_records('subjects'))
-# add_record('hometasks', {'subject_id': 3, 'info': 'Написать программу учета банковских транзакций'})
-# add_record('hometasks')
-# add_record('homeworks', {'hometask_id': 2, 'author_id': 1, 'homework': 'Решение задания'})
-# add_record('marks_table', {'homework_id': 1, 'teacher_name_id': 1, 'mark': 5, 'comment': "Отличная работа"})
-#
-# print(get_all_records('teachers'))
 
-
+def del_record_by_value(table, key, value):
+    cursor = connection.cursor()
+    cursor.execute(f"DELETE FROM {table} WHERE {key}='{value}';")
+    connection.commit()
+    return value
