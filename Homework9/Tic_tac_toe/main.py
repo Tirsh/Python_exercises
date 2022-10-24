@@ -1,6 +1,9 @@
 import random
+import emoji
 
 FIELD_MAP = {0: 11, 1: 21, 2: 31, 3: 12, 4: 22, 5: 32, 6: 13, 7: 23, 8: 33}
+KROSS = emoji.emojize(':cross_mark:')
+ZERO = emoji.emojize(':hollow_red_circle:')
 
 
 def input_int(text, answers):
@@ -18,13 +21,13 @@ def input_int(text, answers):
 
 
 def draw_field(field):
-    desk = {1: " ", 2: "X", 3: "0"}
+    desk = {1: "  ", 2: KROSS, 3: ZERO}
     print("""
-               1   2   3
+               1     2     3
             1  {} | {} | {}
-              -----------
+              --------------
             2  {} | {} | {}
-              -----------
+              --------------
             3  {} | {} | {}""".format(*[desk[i] for i in field]))
 
 
@@ -92,8 +95,8 @@ def start_game():
     game_over = False
     winner = 0
     field = [1 for _ in range(9)]
-    print("Игрок: Х")
-    print("Бот:   0")
+    print(f"Игрок: {KROSS}")
+    print(f"Бот:   {ZERO}")
     input("Для начала игры нажмите [ENTER]")
     first_turn = lottery()
     if first_turn:
@@ -117,7 +120,10 @@ def start_game():
             first_turn = True
         if 1 not in field:
             game_over = True
-    winners = {0: "Ничья!", 1: "Побеждает игрок!", 2: "Побеждает Бот!"}
+    monkey = emoji.emojize(':see-no-evil_monkey:')
+    handshake = emoji.emojize(':handshake:')
+    party = emoji.emojize(':party popper:')
+    winners = {0: f"Ничья! {handshake}", 1: f"Побеждает игрок! {party}", 2: f"Побеждает Бот! {monkey}"}
     print("Конец игры!\n{}".format(winners[winner]))
 
 
