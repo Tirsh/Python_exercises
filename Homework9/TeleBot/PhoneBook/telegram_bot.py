@@ -2,6 +2,7 @@ import telebot.types
 from telebot import TeleBot
 from controller import start_from_bot
 
+
 bot = TeleBot('5649719020:AAGTObnM7A8zDDPgmQ2YrdsKJztJ_tP8oBs')
 
 
@@ -53,7 +54,12 @@ def file_export_and_import(msg, option, file_type):
         bot.send_message(chat_id=msg.from_user.id, text=result)
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['help'])
+def show_help(msg: telebot.types.Message):
+    bot.send_message(chat_id=msg.from_user.id, text="/menu - чтобы увидеть меню")
+
+
+@bot.message_handler(commands=['menu'])
 def show_main_menu(msg: telebot.types.Message):
     menu = """1. Просмотр записей
 2. Добавление записи
