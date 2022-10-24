@@ -7,6 +7,11 @@ from mathematics import make_calc
 bot = TeleBot('5649719020:AAGTObnM7A8zDDPgmQ2YrdsKJztJ_tP8oBs')
 
 
+@bot.message_handler(commands=['help'])
+def show_help(msg: telebot.types.Message):
+    bot.send_message(chat_id=msg.from_user.id, text="/menu - чтобы увидеть меню")
+
+
 @bot.message_handler(commands=["menu"])
 def show_main_menu(msg: telebot.types.Message):
     menu = """Введите тип чисел.
