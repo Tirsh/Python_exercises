@@ -4,7 +4,7 @@ import input_checker
 import out
 from mathematics import make_calc
 
-bot = TeleBot('5649719020:AAGTObnM7A8zDDPgmQ2YrdsKJztJ_tP8oBs')
+bot = TeleBot('token')
 
 
 @bot.message_handler(commands=['help'])

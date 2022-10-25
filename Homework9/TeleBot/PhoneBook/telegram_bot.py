@@ -3,7 +3,7 @@ from telebot import TeleBot
 from controller import start_from_bot
 
 
-bot = TeleBot('5649719020:AAGTObnM7A8zDDPgmQ2YrdsKJztJ_tP8oBs')
+bot = TeleBot('token')
 
 
 def add_new_number(msg, option):
