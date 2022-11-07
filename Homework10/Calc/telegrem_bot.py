@@ -5,7 +5,7 @@ import out
 import loger
 from mathematics import make_calc
 
-bot = TeleBot('5649719020:AAFNyhYsbH3NqPmlsvluRuJCHRPb0ESSChU')
+bot = TeleBot('token')
 loger.write_log("Бот запущен")
 
 @bot.message_handler(commands=['help'])
