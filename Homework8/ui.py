@@ -214,8 +214,6 @@ def new_comleted_work(user_id):
             print("Некорректный ввод!")
             continue
         if num == "0":
-            return {}
-        if menu_number_checker(int(num), set(range(1, len(hometask)+1))):
             num = hometask[int(num)-1][0]
             break
         else:
